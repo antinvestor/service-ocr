@@ -19,6 +19,11 @@ func (ts *tesseract) Recognize(ctx context.Context, image *os.File) (string, err
 		return "", err
 	}
 
-	return localClient.Text()
+	result, err := localClient.Text()
+	if err != nil {
+		return "", err
+	}
+
+	return result, err
 
 }
