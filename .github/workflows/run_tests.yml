@@ -21,7 +21,12 @@ jobs:
           go version
           go get -u golang.org/x/lint/golint
 
-      - name: Test partition service
+      - name: Install tesseract dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates libtesseract-dev libleptonica-dev  tesseract-ocr-eng
+
+      - name: Test ocr service
         run: go test  ./...
 
       - name: Run Vet & Lint

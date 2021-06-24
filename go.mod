@@ -10,6 +10,8 @@ require (
 	github.com/otiai10/gosseract v2.2.1+incompatible
 	github.com/otiai10/mint v1.3.2 // indirect
 	github.com/pitabwire/frame v1.2.16
+	golang.org/x/oauth2 v0.0.0-20210427180440-81ed05c6b58c
+	google.golang.org/api v0.46.0
 	google.golang.org/grpc v1.38.0
 	gorm.io/datatypes v1.0.1
 
