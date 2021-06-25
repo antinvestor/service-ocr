@@ -2,6 +2,12 @@ package config
 
 const EnvServerPort = "PORT"
 
+const EnvDatabaseUrl = "DATABASE_URL"
+const EnvReplicaDatabaseUrl = "REPLICA_DATABASE_URL"
+
+const EnvMigrate = "DO_MIGRATION"
+const EnvMigrationPath = "MIGRATION_PATH"
+
 const EnvOauth2ServiceUri = "OAUTH2_SERVICE_URI"
 const EnvOauth2ServiceAdminUri = "OAUTH2_SERVICE_ADMIN_URI"
 const EnvOauth2ServiceClientSecret = "OAUTH2_SERVICE_CLIENT_SECRET"

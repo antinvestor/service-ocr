@@ -8,6 +8,7 @@ import (
 	ocr "github.com/antinvestor/service-ocr-api"
 	"github.com/antinvestor/service-ocr/config"
 	"github.com/antinvestor/service-ocr/service/handlers"
+	"github.com/antinvestor/service-ocr/service/models"
 	"github.com/antinvestor/service-ocr/service/queue"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpcrecovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
@@ -15,17 +16,42 @@ import (
 	"github.com/pitabwire/frame"
 	"google.golang.org/grpc"
 	"log"
+	"os"
+	"strconv"
 )
 
 func main() {
 
 	serviceName := "service_ocr"
+
 	ctx := context.Background()
 
-	var err error
-	var serviceOptions []frame.Option
+	datasource := frame.GetEnv(config.EnvDatabaseUrl, "postgres://ant:@nt@localhost:5423/service_ocr")
+	mainDb := frame.Datastore(ctx, datasource, false)
 
-	sysService := frame.NewService(serviceName)
+	readOnlydatasource := frame.GetEnv(config.EnvReplicaDatabaseUrl, datasource)
+	readDb := frame.Datastore(ctx, readOnlydatasource, true)
+
+	sysService := frame.NewService(serviceName, mainDb, readDb)
+
+	isMigration, err := strconv.ParseBool(frame.GetEnv(config.EnvMigrate, "false"))
+	if err != nil {
+		isMigration = false
+	}
+
+	stdArgs := os.Args[1:]
+	if (len(stdArgs) > 0 && stdArgs[0] == "migrate") || isMigration {
+
+		migrationPath := frame.GetEnv(config.EnvMigrationPath, "./migrations/0001")
+		err := sysService.MigrateDatastore(ctx, migrationPath, &models.OcrLog{})
+		if err != nil {
+			log.Fatalf("main -- Could not migrate successfully because : %v", err)
+		}
+
+		return
+	}
+
+	var serviceOptions []frame.Option
 
 	filesServiceURL := frame.GetEnv(config.EnvFilesServiceUri, "127.0.0.1:7005")
 
