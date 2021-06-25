@@ -45,21 +45,15 @@ func (ob *ocrBusiness) ToApi(ocrLogList []*models.OcrLog) *ocr.OcrResponse {
 
 	filesResultList := make([]*ocr.OCRFile, 0)
 
-	for index, ocrLog := range ocrLogList {
+	for _, ocrLog := range ocrLogList {
 
-		if index == 1 {
-			response.ReferenceId = ocrLog.ReferenceID
-			response.State = common.STATE(ocrLog.State)
-		} else {
-			if response.State != common.STATE(ocrLog.State) {
-				response.State = common.STATE(ocrLog.State)
-			}
-		}
+		response.ReferenceId = ocrLog.ReferenceID
 
 		ocrFile := &ocr.OCRFile{
 			FileId:     ocrLog.FileID,
 			Language:   ocrLog.LanguageID,
 			Text:       ocrLog.Text,
+			Status: common.STATUS(ocrLog.Status),
 			Properties: frame.DBPropertiesToMap(ocrLog.Properties),
 		}
 

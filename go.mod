@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/antinvestor/apis v1.0.5
 	github.com/antinvestor/service-files-api v1.0.4
-	github.com/antinvestor/service-ocr-api v1.0.0
+	github.com/antinvestor/service-ocr-api v1.2.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/otiai10/gosseract/v2 v2.3.1
 	github.com/pitabwire/frame v1.2.16

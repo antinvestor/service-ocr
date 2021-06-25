@@ -87,8 +87,8 @@ github.com/antinvestor/apis v1.0.5 h1:KfUpAx/RqH98WRoXTnwXHy3dAywez5WhImiskD+/IC
 github.com/antinvestor/apis v1.0.5/go.mod h1:0cKNgx6iL0TlmWI3aooiFJFs5X64eFG5/qEL0p85si4=
 github.com/antinvestor/service-files-api v1.0.4 h1:JzoIh2+lsLlzbz+tcZFbHlIZ6Hi3oJZkUB4S/cwP0z0=
 github.com/antinvestor/service-files-api v1.0.4/go.mod h1:SiS6VTE/R3PlewJ7h0LXNXul4uwRjmMyPyyw5gWAo0c=
-github.com/antinvestor/service-ocr-api v1.0.0 h1:9FjstduvX3XS1W39SOSIpbKMzXVR4sFc3cIbouSUB3U=
-github.com/antinvestor/service-ocr-api v1.0.0/go.mod h1:E3oOl7SPCxCQrXEzo7maIeMrm+7B/hHTvMt9dK5xSS8=
+github.com/antinvestor/service-ocr-api v1.2.0 h1:mt89zcX/kdjRNXY4CfEZb9uQpsNnJldhm949Vpf0d28=
+github.com/antinvestor/service-ocr-api v1.2.0/go.mod h1:E3oOl7SPCxCQrXEzo7maIeMrm+7B/hHTvMt9dK5xSS8=
 github.com/aws/aws-sdk-go v1.15.27/go.mod h1:mFuSZ37Z9YOHbQEwBWztmVzqXrEkub65tZoCYDt7FT0=
 github.com/aws/aws-sdk-go v1.23.20/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
 github.com/aws/aws-sdk-go v1.38.35 h1:7AlAO0FC+8nFjxiGKEmq0QLpiA8/XFr6eIxgRTwkdTg=
