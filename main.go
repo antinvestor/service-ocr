@@ -59,7 +59,6 @@ func main() {
 	oauth2ServiceURL := fmt.Sprintf("%s/oauth2/token", oauth2ServiceHost)
 	oauth2ServiceSecret := frame.GetEnv(config.EnvOauth2ServiceClientSecret, "")
 
-
 	filesCli, err := fapi.NewFilesClient(ctx,
 		apis.WithEndpoint(filesServiceURL), apis.WithTokenEndpoint(oauth2ServiceURL),
 		apis.WithTokenUsername(serviceName), apis.WithTokenPassword(oauth2ServiceSecret))
@@ -73,6 +72,7 @@ func main() {
 			grpcrecovery.UnaryServerInterceptor(),
 			frame.UnaryAuthInterceptor(jwtAudience, jwtIssuer),
 		)),
+		grpc.StreamInterceptor(frame.StreamAuthInterceptor(jwtAudience, jwtIssuer)),
 	)
 
 	implementation := &handlers.OCRServer{
@@ -83,7 +83,6 @@ func main() {
 
 	grpcServerOpt := frame.GrpcServer(grpcServer)
 	serviceOptions = append(serviceOptions, grpcServerOpt)
-
 
 	ocrSyncQueueHandler := queue.NewOCRQueueHandler(sysService)
 	ocrSyncQueueURL := frame.GetEnv(config.EnvQueueOcrSync, fmt.Sprintf("mem://%s", config.QueueOcrSyncName))

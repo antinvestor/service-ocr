@@ -377,8 +377,8 @@ github.com/otiai10/gosseract/v2 v2.3.1/go.mod h1:2ZOGgdTIXQzCS5f+N1HkcXRgDX6K3Zo
 github.com/otiai10/mint v1.3.0/go.mod h1:F5AjcsTsWUqX+Na9fpHb52P8pcRX2CI6A3ctIT91xUo=
 github.com/otiai10/mint v1.3.2 h1:VYWnrP5fXmz1MXvjuUvcBrXSjGE6xjON+axB/UrpO3E=
 github.com/otiai10/mint v1.3.2/go.mod h1:/yxELlJQ0ufhjUwhshSj+wFjZ78CnZ48/1wtmBH1OTc=
-github.com/pitabwire/frame v1.2.16 h1:t8yhdRZHhw/XBMZRadZvN/TvHjS6U069YR3zCG3ubrg=
-github.com/pitabwire/frame v1.2.16/go.mod h1:NMIUzgw/sFtce8UeiZA2wVt1njI2I/3zE0qxRAEu3NQ=
+github.com/pitabwire/frame v1.3.1 h1:F6Yzk7mt663HfkT+k1/Ydw+LXw+ZbplteKZkpIe/DXc=
+github.com/pitabwire/frame v1.3.1/go.mod h1:NMIUzgw/sFtce8UeiZA2wVt1njI2I/3zE0qxRAEu3NQ=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
