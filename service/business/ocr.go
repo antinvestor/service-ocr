@@ -97,7 +97,7 @@ func (ob *ocrBusiness) Recognize(ctx context.Context, request *ocr.OcrRequest) (
 
 		if request.GetAsync() {
 
-			newOcrLog.GenID()
+			newOcrLog.GenID(ctx)
 
 			err := ob.service.Publish(ctx, config.QueueOcrSyncName, newOcrLog)
 			if err != nil {

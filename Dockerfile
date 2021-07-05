@@ -9,7 +9,7 @@ RUN apt-get install -y ca-certificates libtesseract-dev libleptonica-dev
 WORKDIR /
 COPY go.mod .
 COPY go.sum .
-RUN go mod download
+RUN go env -w GOFLAGS=-mod=mod && go mod download
 
 # Copy the local package files to the container's workspace.
 COPY . .
