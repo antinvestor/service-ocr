@@ -2,7 +2,7 @@ package business
 
 import (
 	"context"
-	"github.com/otiai10/gosseract/v2"
+	gosseract2 "github.com/otiai10/gosseract/v2"
 	"os"
 )
 
@@ -11,7 +11,7 @@ type tesseract struct {
 
 func (ts *tesseract) Recognize(ctx context.Context, image *os.File) (string, error) {
 
-	localClient := gosseract.NewClient()
+	localClient := gosseract2.NewClient()
 	defer localClient.Close()
 
 	err := localClient.SetImage(image.Name())
