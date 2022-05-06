@@ -13,3 +13,9 @@ jobs:
 
       - name: Run Changelog CI
         uses: saadmk11/changelog-ci@v1.0.0
+        with:
+          changelog_filename: CHANGELOG.md
+          committer_username: 'github-action'
+          committer_email: 'github-action@github.com'
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
