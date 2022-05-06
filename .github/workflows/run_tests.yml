@@ -14,25 +14,17 @@ jobs:
       - name: Setup go testing infrastructure
         uses: actions/setup-go@v3
         with:
-          go-version: '1.16'
+          go-version: '1.18'
 
       - name: Install dependencies
         run: |
           go version
-          go get -u golang.org/x/lint/golint
 
       - name: Install tesseract dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y ca-certificates libtesseract-dev libleptonica-dev  tesseract-ocr-eng
 
-      - name: Workaround for go1.16 https://github.com/golang/go/issues/44129#issuecomment-854975677
-        run: go env -w GOFLAGS=-mod=mod
-
       - name: Test ocr service
         run: go test  ./...
 
-      - name: Run Vet & Lint
-        run: |
-          go vet .
-          golint -set_exit_status=1 .
