@@ -41,7 +41,6 @@ func main() {
 
 	stdArgs := os.Args[1:]
 	if (len(stdArgs) > 0 && stdArgs[0] == "migrate") || isMigration {
-
 		migrationPath := frame.GetEnv(config.EnvMigrationPath, "./migrations/0001")
 		err := sysService.MigrateDatastore(ctx, migrationPath, &models.OcrLog{})
 		if err != nil {
@@ -62,6 +61,9 @@ func main() {
 	filesCli, err := fapi.NewFilesClient(ctx,
 		apis.WithEndpoint(filesServiceURL), apis.WithTokenEndpoint(oauth2ServiceURL),
 		apis.WithTokenUsername(serviceName), apis.WithTokenPassword(oauth2ServiceSecret))
+	if err != nil {
+		log.Fatalf("main -- Could not setup files service : %+v", err)
+	}
 
 	jwtAudience := frame.GetEnv(config.EnvOauth2JwtVerifyAudience, serviceName)
 	jwtIssuer := frame.GetEnv(config.EnvOauth2JwtVerifyIssuer, "")
@@ -91,9 +93,7 @@ func main() {
 	serviceOptions = append(serviceOptions, ocrSyncQueue, ocrSyncQueueP)
 
 	sysService.Init(serviceOptions...)
-
 	serverPort := frame.GetEnv(config.EnvServerPort, "7012")
-
 	log.Printf(" main -- Initiating server operations on : %s", serverPort)
 	err = sysService.Run(ctx, fmt.Sprintf(":%v", serverPort))
 	if err != nil {

@@ -16,7 +16,7 @@ import (
 type OCRBusiness interface {
 	Recognize(ctx context.Context, request *ocr.OcrRequest) (*ocr.OcrResponse, error)
 	CheckProgress(ctx context.Context, request *ocr.StatusRequest) (*ocr.OcrResponse, error)
-	ToApi(ocrLogList []*models.OcrLog) *ocr.OcrResponse
+	ToAPI(ocrLogList []*models.OcrLog) *ocr.OcrResponse
 }
 
 type Recognizer interface {
@@ -39,21 +39,20 @@ type ocrBusiness struct {
 	recognizer Recognizer
 }
 
-func (ob *ocrBusiness) ToApi(ocrLogList []*models.OcrLog) *ocr.OcrResponse {
+func (ob *ocrBusiness) ToAPI(ocrLogList []*models.OcrLog) *ocr.OcrResponse {
 
 	response := &ocr.OcrResponse{}
 
 	filesResultList := make([]*ocr.OCRFile, 0)
 
 	for _, ocrLog := range ocrLogList {
-
 		response.ReferenceId = ocrLog.ReferenceID
 
 		ocrFile := &ocr.OCRFile{
 			FileId:     ocrLog.FileID,
 			Language:   ocrLog.LanguageID,
 			Text:       ocrLog.Text,
-			Status: common.STATUS(ocrLog.Status),
+			Status:     common.STATUS(ocrLog.Status),
 			Properties: frame.DBPropertiesToMap(ocrLog.Properties),
 		}
 
@@ -66,44 +65,39 @@ func (ob *ocrBusiness) ToApi(ocrLogList []*models.OcrLog) *ocr.OcrResponse {
 }
 
 func (ob *ocrBusiness) CheckProgress(ctx context.Context, request *ocr.StatusRequest) (*ocr.OcrResponse, error) {
-
 	ocrLogList, err := ob.ocrRepo.GetByReference(ctx, request.GetReferenceId())
 	if err != nil {
 		return nil, err
 	}
 
-	return ob.ToApi(ocrLogList), nil
+	return ob.ToAPI(ocrLogList), nil
 }
 
 func (ob *ocrBusiness) Recognize(ctx context.Context, request *ocr.OcrRequest) (*ocr.OcrResponse, error) {
-
 	authClaims := frame.ClaimsFromContext(ctx)
 
-	accessId := authClaims.AccessID
+	accessID := authClaims.AccessID
 
 	ocrLogList := make([]*models.OcrLog, 0)
 
-	for _, fileId := range request.GetFileId() {
+	for _, fileID := range request.GetFileId() {
 
 		newOcrLog := &models.OcrLog{
 			ReferenceID: request.GetReferenceId(),
-			FileID:      fileId,
-			AccessID:    accessId,
+			FileID:      fileID,
+			AccessID:    accessID,
 			LanguageID:  request.GetLanguageId(),
 			State:       int32(common.STATE_ACTIVE),
 			Status:      int32(common.STATUS_QUEUED),
 			Properties:  frame.DBPropertiesFromMap(request.GetProperties()),
 		}
-
 		if request.GetAsync() {
-
 			newOcrLog.GenID(ctx)
 
 			err := ob.service.Publish(ctx, config.QueueOcrSyncName, newOcrLog)
 			if err != nil {
 				return nil, err
 			}
-
 		} else {
 			err := ob.ocrRepo.Save(ctx, newOcrLog)
 			if err != nil {
@@ -114,17 +108,14 @@ func (ob *ocrBusiness) Recognize(ctx context.Context, request *ocr.OcrRequest) (
 			if err != nil {
 				return nil, err
 			}
-
 		}
 		ocrLogList = append(ocrLogList, newOcrLog)
-
 	}
 
-	return ob.ToApi(ocrLogList), nil
+	return ob.ToAPI(ocrLogList), nil
 }
 
 func (ob *ocrBusiness) recognize(ctx context.Context, ocrLog *models.OcrLog) (*models.OcrLog, error) {
-
 	if common.STATUS_QUEUED == common.STATUS(ocrLog.Status) {
 		ocrLog.Status = int32(common.STATUS_IN_PROCESS)
 		err := ob.ocrRepo.Save(ctx, ocrLog)
@@ -134,7 +125,9 @@ func (ob *ocrBusiness) recognize(ctx context.Context, ocrLog *models.OcrLog) (*m
 	}
 
 	file, _, err := ob.filesCli.DefaultApi.FindFileById(ctx, ocrLog.FileID).Execute()
-
+	if err != nil {
+		return nil, err
+	}
 	ocrLog.Text, err = ob.recognizer.Recognize(ctx, file)
 	if err != nil {
 		ocrLog.Status = int32(common.STATUS_FAILED)
