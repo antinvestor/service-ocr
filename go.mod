@@ -11,7 +11,7 @@ require (
 	github.com/pitabwire/frame v1.7.12
 	golang.org/x/oauth2 v0.0.0-20220411215720-9780585627b5
 	google.golang.org/api v0.78.0
-	google.golang.org/grpc v1.46.0
+	google.golang.org/grpc v1.46.2
 	gorm.io/datatypes v1.0.6
 
 )
