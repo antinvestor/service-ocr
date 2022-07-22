@@ -9,7 +9,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/otiai10/gosseract/v2 v2.4.0
 	github.com/pitabwire/frame v1.7.12
-	golang.org/x/oauth2 v0.0.0-20220718184931-c8730f7fcb92
+	golang.org/x/oauth2 v0.0.0-20220722155238-128564f6959c
 	google.golang.org/api v0.88.0
 	google.golang.org/grpc v1.48.0
 	gorm.io/datatypes v1.0.7
