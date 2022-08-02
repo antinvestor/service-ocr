@@ -1,6 +1,6 @@
 module github.com/antinvestor/service-ocr
 
-go 1.18
+go 1.19
 
 require (
 	github.com/antinvestor/apis v1.1.13
