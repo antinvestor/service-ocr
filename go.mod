@@ -10,7 +10,7 @@ require (
 	github.com/otiai10/gosseract/v2 v2.4.0
 	github.com/pitabwire/frame v1.7.13
 	golang.org/x/oauth2 v0.1.0
-	google.golang.org/api v0.100.0
+	google.golang.org/api v0.101.0
 	google.golang.org/grpc v1.50.1
 	gorm.io/datatypes v1.0.7
 
@@ -67,12 +67,12 @@ require (
 	gocloud.dev v0.25.0 // indirect
 	golang.org/x/crypto v0.0.0-20220331220935-ae2d96664a29 // indirect
 	golang.org/x/net v0.1.0 // indirect
-	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0 // indirect
+	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20221014213838-99cd37c6964a // indirect
+	google.golang.org/genproto v0.0.0-20221018160656-63c7b68cfc55 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gorm.io/driver/mysql v1.3.2 // indirect
 	gorm.io/driver/postgres v1.3.4 // indirect
