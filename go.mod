@@ -12,7 +12,7 @@ require (
 	golang.org/x/oauth2 v0.6.0
 	google.golang.org/api v0.111.0
 	google.golang.org/grpc v1.53.0
-	gorm.io/datatypes v1.1.0
+	gorm.io/datatypes v1.1.1
 
 )
 
@@ -75,8 +75,8 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
-	gorm.io/driver/mysql v1.4.4 // indirect
+	gorm.io/driver/mysql v1.4.7 // indirect
 	gorm.io/driver/postgres v1.4.5 // indirect
-	gorm.io/gorm v1.24.2 // indirect
+	gorm.io/gorm v1.24.6 // indirect
 	nhooyr.io/websocket v1.8.7 // indirect
 )
