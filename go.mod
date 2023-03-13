@@ -3,7 +3,7 @@ module github.com/antinvestor/service-ocr
 go 1.19
 
 require (
-	github.com/antinvestor/apis v1.1.13
+	github.com/antinvestor/apis v1.1.14
 	github.com/antinvestor/service-files-api v1.0.4
 	github.com/antinvestor/service-ocr-api v1.2.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
@@ -74,7 +74,7 @@ require (
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230303212802-e74f57abe488 // indirect
-	google.golang.org/protobuf v1.28.1 // indirect
+	google.golang.org/protobuf v1.29.0 // indirect
 	gorm.io/driver/mysql v1.4.7 // indirect
 	gorm.io/driver/postgres v1.4.5 // indirect
 	gorm.io/gorm v1.24.6 // indirect
