@@ -10,7 +10,7 @@ require (
 	github.com/otiai10/gosseract/v2 v2.4.0
 	github.com/pitabwire/frame v1.7.13
 	golang.org/x/oauth2 v0.6.0
-	google.golang.org/api v0.112.0
+	google.golang.org/api v0.113.0
 	google.golang.org/grpc v1.53.0
 	gorm.io/datatypes v1.1.1
 
@@ -35,7 +35,7 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/google/wire v0.5.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
-	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
+	github.com/googleapis/gax-go/v2 v2.7.1 // indirect
 	github.com/improbable-eng/grpc-web v0.15.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.13.0 // indirect
@@ -73,8 +73,8 @@ require (
 	golang.org/x/text v0.8.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20230303212802-e74f57abe488 // indirect
-	google.golang.org/protobuf v1.29.0 // indirect
+	google.golang.org/genproto v0.0.0-20230306155012-7f2fa6fef1f4 // indirect
+	google.golang.org/protobuf v1.29.1 // indirect
 	gorm.io/driver/mysql v1.4.7 // indirect
 	gorm.io/driver/postgres v1.4.5 // indirect
 	gorm.io/gorm v1.24.6 // indirect
