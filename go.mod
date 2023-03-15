@@ -6,7 +6,7 @@ require (
 	github.com/antinvestor/apis v1.1.14
 	github.com/antinvestor/service-files-api v1.0.4
 	github.com/antinvestor/service-ocr-api v1.2.1
-	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
+	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/otiai10/gosseract/v2 v2.4.0
 	github.com/pitabwire/frame v1.7.13
 	golang.org/x/oauth2 v0.6.0
