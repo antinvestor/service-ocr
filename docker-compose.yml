@@ -2,21 +2,21 @@ version: '3.9'
 
 services:
   ocr_db:
-    image: postgres:14
+    image: postgres:16
     restart: unless-stopped
     environment:
-      - POSTGRES_USER=ocr
+      - POSTGRES_USER=ant
       - POSTGRES_PASSWORD=secret
-      - POSTGRES_DB=ocrdatabase
+      - POSTGRES_DB=service_ocr
     ports:
-      - 5426:5432
+      - "5439:5432"
 
   ocr_migration:
-    build: ../
+    build: ./
     depends_on:
       - ocr_db
     environment:
       - LOG_LEVEL=debug
       - DO_MIGRATION=true
-      - DATABASE_URL=postgres://ocr:secret@ocr_db:5432/ocrdatabase?sslmode=disable
+      - DATABASE_URL=postgres://ant:secret@ocr_db:5432/service_ocr?sslmode=disable
     restart: on-failure

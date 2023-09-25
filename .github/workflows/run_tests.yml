@@ -1,4 +1,4 @@
-name: Testing Service
+name: Service testing action
 
 on: [push]
 
@@ -12,19 +12,9 @@ jobs:
       - name: Checkout new code for testing
         uses: actions/checkout@v3
       - name: Setup go testing infrastructure
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
-          go-version: '1.18'
+          go-version: '1.20'
 
-      - name: Install dependencies
-        run: |
-          go version
-
-      - name: Install tesseract dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ca-certificates libtesseract-dev libleptonica-dev  tesseract-ocr-eng
-
-      - name: Test ocr service
-        run: go test  ./...
-
+      - name: Run all required system tests
+        run: make build

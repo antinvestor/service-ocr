@@ -9,8 +9,8 @@ import (
 )
 
 type OCRQueueHandler struct {
-	service    *frame.Service
-	repo repository.OcrRepository
+	service *frame.Service
+	repo    repository.OcrRepository
 }
 
 func (oq *OCRQueueHandler) Handle(ctx context.Context, payload []byte) error {
@@ -25,7 +25,7 @@ func (oq *OCRQueueHandler) Handle(ctx context.Context, payload []byte) error {
 
 }
 
-func NewOCRQueueHandler(service *frame.Service) *OCRQueueHandler{
+func NewOCRQueueHandler(service *frame.Service) *OCRQueueHandler {
 	ocrRepo := repository.NewOcrRepository(service)
 	return &OCRQueueHandler{service, ocrRepo}
 }

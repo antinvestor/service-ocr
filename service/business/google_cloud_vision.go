@@ -11,11 +11,9 @@ import (
 )
 
 type googleCloudVision struct {
-
 }
 
-func (gcv *googleCloudVision) Recognize(ctx context.Context, image *os.File) (string, error)  {
-
+func (gcv *googleCloudVision) Recognize(ctx context.Context, image *os.File) (string, error) {
 
 	// Authenticate to generate a vision service
 	client, err := google.DefaultClient(ctx, vision.CloudPlatformScope)
@@ -67,4 +65,3 @@ func (gcv *googleCloudVision) Recognize(ctx context.Context, image *os.File) (st
 	}
 	return result, nil
 }
-

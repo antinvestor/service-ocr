@@ -23,7 +23,7 @@ type Recognizer interface {
 	Recognize(ctx context.Context, image *os.File) (string, error)
 }
 
-func NewOcrBusiness(ctx context.Context, service *frame.Service, filesCli *fapi.FilesClient) OCRBusiness {
+func NewOcrBusiness(_ context.Context, service *frame.Service, filesCli *fapi.FilesClient) OCRBusiness {
 	return &ocrBusiness{
 		service:    service,
 		filesCli:   filesCli,
@@ -76,6 +76,8 @@ func (ob *ocrBusiness) CheckProgress(ctx context.Context, request *ocr.StatusReq
 func (ob *ocrBusiness) Recognize(ctx context.Context, request *ocr.OcrRequest) (*ocr.OcrResponse, error) {
 	authClaims := frame.ClaimsFromContext(ctx)
 
+	ocrConfig := ob.service.Config().(*config.OcrConfig)
+
 	accessID := authClaims.AccessID
 
 	ocrLogList := make([]*models.OcrLog, 0)
@@ -94,7 +96,7 @@ func (ob *ocrBusiness) Recognize(ctx context.Context, request *ocr.OcrRequest) (
 		if request.GetAsync() {
 			newOcrLog.GenID(ctx)
 
-			err := ob.service.Publish(ctx, config.QueueOcrSyncName, newOcrLog)
+			err := ob.service.Publish(ctx, ocrConfig.QueueOcrSyncName, newOcrLog)
 			if err != nil {
 				return nil, err
 			}

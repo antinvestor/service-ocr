@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"github.com/antinvestor/apis"
 	fapi "github.com/antinvestor/service-files-api"
@@ -14,71 +13,82 @@ import (
 	grpcrecovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpcctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	"github.com/pitabwire/frame"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
-	"log"
-	"os"
-	"strconv"
+	"strings"
 )
 
 func main() {
 
 	serviceName := "service_ocr"
 
-	ctx := context.Background()
-
-	datasource := frame.GetEnv(config.EnvDatabaseUrl, "postgres://ant:@nt@localhost:5423/service_ocr")
-	mainDb := frame.Datastore(ctx, datasource, false)
-
-	readOnlydatasource := frame.GetEnv(config.EnvReplicaDatabaseUrl, datasource)
-	readDb := frame.Datastore(ctx, readOnlydatasource, true)
-
-	sysService := frame.NewService(serviceName, mainDb, readDb)
-
-	isMigration, err := strconv.ParseBool(frame.GetEnv(config.EnvMigrate, "false"))
+	var ocrConfig config.OcrConfig
+	err := frame.ConfigProcess("", &ocrConfig)
 	if err != nil {
-		isMigration = false
+		logrus.WithError(err).Fatal("could not process configs")
+		return
 	}
 
-	stdArgs := os.Args[1:]
-	if (len(stdArgs) > 0 && stdArgs[0] == "migrate") || isMigration {
-		migrationPath := frame.GetEnv(config.EnvMigrationPath, "./migrations/0001")
-		err := sysService.MigrateDatastore(ctx, migrationPath, &models.OcrLog{})
+	ctx, service := frame.NewService(serviceName, frame.Config(&ocrConfig))
+	defer service.Stop(ctx)
+	log := service.L()
+
+	serviceOptions := []frame.Option{frame.Datastore(ctx)}
+
+	if ocrConfig.DoDatabaseMigrate() {
+
+		service.Init(serviceOptions...)
+
+		err := service.MigrateDatastore(ctx, ocrConfig.GetDatabaseMigrationPath(),
+			&models.OcrLog{})
+
 		if err != nil {
-			log.Fatalf("main -- Could not migrate successfully because : %v", err)
+			log.Fatalf("main -- Could not migrate successfully because : %+v", err)
 		}
 
 		return
 	}
 
-	var serviceOptions []frame.Option
+	err = service.RegisterForJwt(ctx)
+	if err != nil {
+		log.WithError(err).Fatal("main -- could not register fo jwt")
+	}
 
-	filesServiceURL := frame.GetEnv(config.EnvFilesServiceUri, "127.0.0.1:7005")
-
-	oauth2ServiceHost := frame.GetEnv(config.EnvOauth2ServiceUri, "")
+	oauth2ServiceHost := ocrConfig.GetOauth2ServiceURI()
 	oauth2ServiceURL := fmt.Sprintf("%s/oauth2/token", oauth2ServiceHost)
-	oauth2ServiceSecret := frame.GetEnv(config.EnvOauth2ServiceClientSecret, "")
+
+	audienceList := make([]string, 0)
+	oauth2ServiceAudience := ocrConfig.Oauth2ServiceAudience
+	if oauth2ServiceAudience != "" {
+		audienceList = strings.Split(oauth2ServiceAudience, ",")
+	}
 
 	filesCli, err := fapi.NewFilesClient(ctx,
-		apis.WithEndpoint(filesServiceURL), apis.WithTokenEndpoint(oauth2ServiceURL),
-		apis.WithTokenUsername(serviceName), apis.WithTokenPassword(oauth2ServiceSecret))
+		apis.WithEndpoint(ocrConfig.FilesServiceURI),
+		apis.WithTokenEndpoint(oauth2ServiceURL),
+		apis.WithTokenUsername(service.JwtClientID()),
+		apis.WithTokenPassword(ocrConfig.Oauth2ServiceClientSecret),
+		apis.WithAudiences(audienceList...))
 	if err != nil {
 		log.Fatalf("main -- Could not setup files service : %+v", err)
 	}
 
-	jwtAudience := frame.GetEnv(config.EnvOauth2JwtVerifyAudience, serviceName)
-	jwtIssuer := frame.GetEnv(config.EnvOauth2JwtVerifyIssuer, "")
+	jwtAudience := ocrConfig.Oauth2JwtVerifyAudience
+	if jwtAudience == "" {
+		jwtAudience = serviceName
+	}
 
 	grpcServer := grpc.NewServer(
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 			grpcctxtags.UnaryServerInterceptor(),
 			grpcrecovery.UnaryServerInterceptor(),
-			frame.UnaryAuthInterceptor(jwtAudience, jwtIssuer),
+			service.UnaryAuthInterceptor(jwtAudience, ocrConfig.Oauth2JwtVerifyIssuer),
 		)),
-		grpc.StreamInterceptor(frame.StreamAuthInterceptor(jwtAudience, jwtIssuer)),
+		grpc.StreamInterceptor(service.StreamAuthInterceptor(jwtAudience, ocrConfig.Oauth2JwtVerifyIssuer)),
 	)
 
 	implementation := &handlers.OCRServer{
-		Service:  sysService,
+		Service:  service,
 		FilesCli: filesCli,
 	}
 	ocr.RegisterOCRServiceServer(grpcServer, implementation)
@@ -86,16 +96,18 @@ func main() {
 	grpcServerOpt := frame.GrpcServer(grpcServer)
 	serviceOptions = append(serviceOptions, grpcServerOpt)
 
-	ocrSyncQueueHandler := queue.NewOCRQueueHandler(sysService)
-	ocrSyncQueueURL := frame.GetEnv(config.EnvQueueOcrSync, fmt.Sprintf("mem://%s", config.QueueOcrSyncName))
-	ocrSyncQueue := frame.RegisterSubscriber(config.QueueOcrSyncName, ocrSyncQueueURL, 2, ocrSyncQueueHandler)
-	ocrSyncQueueP := frame.RegisterPublisher(config.QueueOcrSyncName, ocrSyncQueueURL)
+	ocrSyncQueueHandler := queue.NewOCRQueueHandler(service)
+	ocrSyncQueue := frame.RegisterSubscriber(ocrConfig.QueueOcrSyncName, ocrConfig.QueueOcrSync, 2, ocrSyncQueueHandler)
+	ocrSyncQueueP := frame.RegisterPublisher(ocrConfig.QueueOcrSyncName, ocrConfig.QueueOcrSync)
 	serviceOptions = append(serviceOptions, ocrSyncQueue, ocrSyncQueueP)
 
-	sysService.Init(serviceOptions...)
-	serverPort := frame.GetEnv(config.EnvServerPort, "7012")
-	log.Printf(" main -- Initiating server operations on : %s", serverPort)
-	err = sysService.Run(ctx, fmt.Sprintf(":%v", serverPort))
+	service.Init(serviceOptions...)
+
+	log.WithField("server http port", ocrConfig.HttpServerPort).
+		WithField("server grpc port", ocrConfig.GrpcServerPort).
+		Info(" Initiating server operations")
+
+	err = service.Run(ctx, "")
 	if err != nil {
 		log.Printf("main -- Could not run Server : %v", err)
 	}
