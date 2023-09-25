@@ -1,6 +1,6 @@
 module github.com/antinvestor/service-ocr
 
-go 1.19
+go 1.20
 
 require (
 	github.com/antinvestor/apis v1.1.18
@@ -11,7 +11,7 @@ require (
 	github.com/pitabwire/frame v1.15.8
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/oauth2 v0.12.0
-	google.golang.org/api v0.134.0
+	google.golang.org/api v0.142.0
 	google.golang.org/grpc v1.58.2
 	gorm.io/datatypes v1.2.0
 
@@ -32,8 +32,8 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/s2a-go v0.1.4 // indirect
-	github.com/google/uuid v1.3.0 // indirect
+	github.com/google/s2a-go v0.1.7 // indirect
+	github.com/google/uuid v1.3.1 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.5 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
 	github.com/improbable-eng/grpc-web v0.15.0 // indirect
@@ -60,7 +60,7 @@ require (
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230731193218-e0aa005b6bdf // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230913181813-007df8e322eb // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gorm.io/driver/mysql v1.4.7 // indirect
 	gorm.io/driver/postgres v1.5.2 // indirect
