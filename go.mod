@@ -3,14 +3,14 @@ module github.com/antinvestor/service-ocr
 go 1.19
 
 require (
-	github.com/antinvestor/apis v1.1.14
+	github.com/antinvestor/apis v1.1.18
 	github.com/antinvestor/service-files-api v1.0.4
 	github.com/antinvestor/service-ocr-api v1.2.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/otiai10/gosseract/v2 v2.4.0
 	github.com/pitabwire/frame v1.15.8
 	github.com/sirupsen/logrus v1.9.3
-	golang.org/x/oauth2 v0.10.0
+	golang.org/x/oauth2 v0.11.0
 	google.golang.org/api v0.134.0
 	google.golang.org/grpc v1.57.0
 	gorm.io/datatypes v1.2.0
