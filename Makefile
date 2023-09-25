@@ -49,7 +49,6 @@ pg_wait:
 docker-stop: ## stops all docker containers
 	docker-compose down
 
-
 # this command will run all tests in the repo
 # INTEGRATION_TEST_SUITE_PATH is used to run specific tests in Golang,
 # if it's not specified it will run all tests

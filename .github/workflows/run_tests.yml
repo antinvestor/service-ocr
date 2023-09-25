@@ -15,6 +15,10 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: '1.20'
+      - name: Install tesseract dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates libtesseract-dev libleptonica-dev  tesseract-ocr-eng
 
       - name: Run all required system tests
         run: make build
