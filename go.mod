@@ -12,7 +12,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/oauth2 v0.10.0
 	google.golang.org/api v0.134.0
-	google.golang.org/grpc v1.57.0
+	google.golang.org/grpc v1.58.2
 	gorm.io/datatypes v1.2.0
 
 )
@@ -24,7 +24,7 @@ require (
 	github.com/alitto/pond v1.8.3 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
-	github.com/envoyproxy/protoc-gen-validate v0.10.1 // indirect
+	github.com/envoyproxy/protoc-gen-validate v1.0.2 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
