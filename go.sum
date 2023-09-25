@@ -59,6 +59,8 @@ github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kd
 github.com/antinvestor/apis v1.0.5/go.mod h1:0cKNgx6iL0TlmWI3aooiFJFs5X64eFG5/qEL0p85si4=
 github.com/antinvestor/apis v1.1.14 h1:svFlkgaU8d6Qv225W5qH6UV073H8J95rJBoWE5jmegU=
 github.com/antinvestor/apis v1.1.14/go.mod h1:Qm1BjaE6n1/cFPSq/pE7bhtg0qqNX6oRFLrPhHz+xcI=
+github.com/antinvestor/apis v1.1.18 h1:JXnMxu2qLoKRUDMkqjiHuj+X3EjZ3CT/q+3WkCVR5AU=
+github.com/antinvestor/apis v1.1.18/go.mod h1:h8wL9/XITja/NOMFdu9xAAFMq4LFaTAWrtWJnukx5nw=
 github.com/antinvestor/service-files-api v1.0.4 h1:JzoIh2+lsLlzbz+tcZFbHlIZ6Hi3oJZkUB4S/cwP0z0=
 github.com/antinvestor/service-files-api v1.0.4/go.mod h1:SiS6VTE/R3PlewJ7h0LXNXul4uwRjmMyPyyw5gWAo0c=
 github.com/antinvestor/service-ocr-api v1.2.1 h1:xrm4+g2qferXMRxIyn2MWGhN4fxfgSPofYlPiKvNN+w=
@@ -614,6 +616,8 @@ golang.org/x/oauth2 v0.0.0-20210113205817-d3ed898aa8a3/go.mod h1:KelEdhl1UZF7XfJ
 golang.org/x/oauth2 v0.0.0-20210218202405-ba52d332ba99/go.mod h1:KelEdhl1UZF7XfJ4dDtk6s++YSgaE7mD/BuKKDLBl4A=
 golang.org/x/oauth2 v0.10.0 h1:zHCpF2Khkwy4mMB4bv0U37YtJdTGW8jI0glAApi0Kh8=
 golang.org/x/oauth2 v0.10.0/go.mod h1:kTpgurOux7LqtuxjuyZa4Gj2gdezIt/jQtGnNFfypQI=
+golang.org/x/oauth2 v0.11.0 h1:vPL4xzxBM4niKCW6g9whtaWVXTJf1U5e4aZxxFx/gbU=
+golang.org/x/oauth2 v0.11.0/go.mod h1:LdF7O/8bLR/qWK9DrpXmbHLTouvRHK0SgJl0GmDBchk=
 golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20181108010431-42b317875d0f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
