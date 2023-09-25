@@ -6,7 +6,7 @@ import (
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/option"
 	"google.golang.org/api/vision/v1"
-	"io/ioutil"
+	"io"
 	"os"
 )
 
@@ -26,7 +26,7 @@ func (gcv *googleCloudVision) Recognize(ctx context.Context, image *os.File) (st
 		return "", err
 	}
 
-	imageContent, err := ioutil.ReadAll(image)
+	imageContent, err := io.ReadAll(image)
 	if err != nil {
 		return "", err
 	}

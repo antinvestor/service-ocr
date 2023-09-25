@@ -9,6 +9,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/otiai10/gosseract/v2 v2.4.0
 	github.com/pitabwire/frame v1.15.8
+	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/oauth2 v0.10.0
 	google.golang.org/api v0.134.0
 	google.golang.org/grpc v1.57.0
@@ -46,7 +47,6 @@ require (
 	github.com/nicksnyder/go-i18n/v2 v2.2.1 // indirect
 	github.com/rs/cors v1.8.3 // indirect
 	github.com/rs/xid v1.5.0 // indirect
-	github.com/sirupsen/logrus v1.9.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/otel v1.17.0 // indirect
 	go.opentelemetry.io/otel/metric v1.17.0 // indirect
