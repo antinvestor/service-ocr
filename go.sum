@@ -65,6 +65,8 @@ github.com/antinvestor/service-files-api v1.0.4 h1:JzoIh2+lsLlzbz+tcZFbHlIZ6Hi3o
 github.com/antinvestor/service-files-api v1.0.4/go.mod h1:SiS6VTE/R3PlewJ7h0LXNXul4uwRjmMyPyyw5gWAo0c=
 github.com/antinvestor/service-ocr-api v1.2.1 h1:xrm4+g2qferXMRxIyn2MWGhN4fxfgSPofYlPiKvNN+w=
 github.com/antinvestor/service-ocr-api v1.2.1/go.mod h1:3B3KbZq8V4BPwWSrbGPdJxWx19kwyUXNIU9AUz9eXCw=
+github.com/antinvestor/service-ocr-api v1.2.2 h1:OfCT/EJfoMXc/2NDs28lCjYw94cmXuk3efZ+/SD1yWo=
+github.com/antinvestor/service-ocr-api v1.2.2/go.mod h1:VduG1NAo6S2It0xd6Cxfjqe26pcVsCC5TtvZSLjJEdw=
 github.com/apache/thrift v0.12.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
 github.com/apache/thrift v0.13.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
 github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e/go.mod h1:3U/XgcO3hCbHZ8TKRvWD2dDTCfh9M9ya+I9JpbB7O8o=
