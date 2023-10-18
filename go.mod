@@ -12,7 +12,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/oauth2 v0.12.0
 	google.golang.org/api v0.143.0
-	google.golang.org/grpc v1.58.2
+	google.golang.org/grpc v1.59.0
 	gorm.io/datatypes v1.2.0
 
 )
