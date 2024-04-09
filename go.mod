@@ -10,7 +10,7 @@ require (
 	github.com/otiai10/gosseract/v2 v2.4.1
 	github.com/pitabwire/frame v1.15.8
 	github.com/sirupsen/logrus v1.9.3
-	golang.org/x/oauth2 v0.18.0
+	golang.org/x/oauth2 v0.19.0
 	google.golang.org/api v0.172.0
 	google.golang.org/grpc v1.63.2
 	gorm.io/datatypes v1.2.0
