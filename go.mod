@@ -11,7 +11,7 @@ require (
 	github.com/pitabwire/frame v1.15.8
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/oauth2 v0.19.0
-	google.golang.org/api v0.175.0
+	google.golang.org/api v0.176.0
 	google.golang.org/grpc v1.63.2
 	gorm.io/datatypes v1.2.0
 
