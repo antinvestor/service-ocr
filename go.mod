@@ -12,7 +12,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/oauth2 v0.20.0
 	google.golang.org/api v0.180.0
-	google.golang.org/grpc v1.63.2
+	google.golang.org/grpc v1.64.0
 	gorm.io/datatypes v1.2.0
 
 )
@@ -20,7 +20,7 @@ require (
 require (
 	cloud.google.com/go/auth v0.4.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.2 // indirect
-	cloud.google.com/go/compute v1.24.0 // indirect
+	cloud.google.com/go/compute v1.25.1 // indirect
 	cloud.google.com/go/compute/metadata v0.3.0 // indirect
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/alitto/pond v1.8.3 // indirect
@@ -54,7 +54,7 @@ require (
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.49.0 // indirect
 	go.opentelemetry.io/otel v1.24.0 // indirect
 	go.opentelemetry.io/otel/metric v1.24.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.21.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.22.0 // indirect
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
 	gocloud.dev v0.34.0 // indirect
 	golang.org/x/crypto v0.23.0 // indirect
