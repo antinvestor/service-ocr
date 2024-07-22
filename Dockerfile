@@ -16,7 +16,7 @@ COPY . .
 
 RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -a -o ocr_binary .
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 RUN apt-get update -qq
 RUN apt-get install -y ca-certificates libtesseract-dev libleptonica-dev  tesseract-ocr-eng
