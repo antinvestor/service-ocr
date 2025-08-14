@@ -1,4 +1,4 @@
-FROM golang:1.22 as builder
+FROM golang:1.25 as builder
 
 # Add Maintainer Info
 LABEL maintainer="Bwire Peter <bwire517@gmail.com>"
