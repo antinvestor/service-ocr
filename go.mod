@@ -3,7 +3,7 @@ module github.com/antinvestor/service-ocr
 go 1.20
 
 require (
-	github.com/antinvestor/apis v1.1.18
+	github.com/antinvestor/apis v1.47.13
 	github.com/antinvestor/service-files-api v1.0.4
 	github.com/antinvestor/service-ocr-api v1.2.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
