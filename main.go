@@ -1,115 +1,135 @@
 package main
 
 import (
-	"fmt"
-	"github.com/antinvestor/apis"
-	fapi "github.com/antinvestor/service-files-api"
-	ocr "github.com/antinvestor/service-ocr-api"
+	"context"
+	"net/http"
+
+	"buf.build/gen/go/antinvestor/files/connectrpc/go/files/v1/filesv1connect"
+	"buf.build/gen/go/antinvestor/ocr/connectrpc/go/ocr/v1/ocrv1connect"
+	"connectrpc.com/connect"
+	apis "github.com/antinvestor/apis/go/common"
+	"github.com/antinvestor/apis/go/files"
 	"github.com/antinvestor/service-ocr/config"
+	"github.com/antinvestor/service-ocr/service/business"
 	"github.com/antinvestor/service-ocr/service/handlers"
 	"github.com/antinvestor/service-ocr/service/models"
 	"github.com/antinvestor/service-ocr/service/queue"
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	grpcrecovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
-	grpcctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
+	"github.com/antinvestor/service-ocr/service/repository"
 	"github.com/pitabwire/frame"
-	"github.com/sirupsen/logrus"
-	"google.golang.org/grpc"
-	"strings"
+	fconfig "github.com/pitabwire/frame/config"
+	"github.com/pitabwire/frame/datastore"
+	"github.com/pitabwire/frame/security"
+	connectInterceptors "github.com/pitabwire/frame/security/interceptors/connect"
+	"github.com/pitabwire/frame/security/openid"
+	"github.com/pitabwire/util"
 )
 
 func main() {
+	tmpCtx := context.Background()
 
-	serviceName := "service_ocr"
-
-	var ocrConfig config.OcrConfig
-	err := frame.ConfigProcess("", &ocrConfig)
+	cfg, err := fconfig.LoadWithOIDC[config.OcrConfig](tmpCtx)
 	if err != nil {
-		logrus.WithError(err).Fatal("could not process configs")
+		util.Log(tmpCtx).WithError(err).Error("could not process configs")
 		return
 	}
 
-	ctx, service := frame.NewService(serviceName, frame.Config(&ocrConfig))
-	defer service.Stop(ctx)
-	log := service.L()
-
-	serviceOptions := []frame.Option{frame.Datastore(ctx)}
-
-	if ocrConfig.DoDatabaseMigrate() {
-
-		service.Init(serviceOptions...)
-
-		err := service.MigrateDatastore(ctx, ocrConfig.GetDatabaseMigrationPath(),
-			&models.OcrLog{})
-
-		if err != nil {
-			log.Fatalf("main -- Could not migrate successfully because : %+v", err)
-		}
-
-		return
+	if cfg.Name() == "" {
+		cfg.ServiceName = "service_ocr"
 	}
 
-	err = service.RegisterForJwt(ctx)
-	if err != nil {
-		log.WithError(err).Fatal("main -- could not register fo jwt")
-	}
-
-	oauth2ServiceHost := ocrConfig.GetOauth2ServiceURI()
-	oauth2ServiceURL := fmt.Sprintf("%s/oauth2/token", oauth2ServiceHost)
-
-	audienceList := make([]string, 0)
-	oauth2ServiceAudience := ocrConfig.Oauth2ServiceAudience
-	if oauth2ServiceAudience != "" {
-		audienceList = strings.Split(oauth2ServiceAudience, ",")
-	}
-
-	filesCli, err := fapi.NewFilesClient(ctx,
-		apis.WithEndpoint(ocrConfig.FilesServiceURI),
-		apis.WithTokenEndpoint(oauth2ServiceURL),
-		apis.WithTokenUsername(service.JwtClientID()),
-		apis.WithTokenPassword(ocrConfig.Oauth2ServiceClientSecret),
-		apis.WithAudiences(audienceList...))
-	if err != nil {
-		log.Fatalf("main -- Could not setup files service : %+v", err)
-	}
-
-	jwtAudience := ocrConfig.Oauth2JwtVerifyAudience
-	if jwtAudience == "" {
-		jwtAudience = serviceName
-	}
-
-	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
-			grpcctxtags.UnaryServerInterceptor(),
-			grpcrecovery.UnaryServerInterceptor(),
-			service.UnaryAuthInterceptor(jwtAudience, ocrConfig.Oauth2JwtVerifyIssuer),
-		)),
-		grpc.StreamInterceptor(service.StreamAuthInterceptor(jwtAudience, ocrConfig.Oauth2JwtVerifyIssuer)),
+	ctx, svc := frame.NewServiceWithContext(
+		tmpCtx,
+		frame.WithConfig(&cfg),
+		frame.WithRegisterServerOauth2Client(),
+		frame.WithDatastore(),
 	)
+	defer svc.Stop(ctx)
 
-	implementation := &handlers.OCRServer{
-		Service:  service,
-		FilesCli: filesCli,
+	log := util.Log(ctx)
+	dbManager := svc.DatastoreManager()
+
+	if cfg.DoDatabaseMigrate() {
+		dbPool := dbManager.GetPool(ctx, datastore.DefaultMigrationPoolName)
+		if dbPool == nil {
+			log.Fatal("database pool is nil - check DATABASE_URL environment variable")
+			return
+		}
+		err = dbManager.Migrate(ctx, dbPool, cfg.GetDatabaseMigrationPath(),
+			&models.OcrLog{})
+		if err != nil {
+			log.WithError(err).Fatal("could not migrate successfully")
+		}
+		return
 	}
-	ocr.RegisterOCRServiceServer(grpcServer, implementation)
 
-	grpcServerOpt := frame.GrpcServer(grpcServer)
-	serviceOptions = append(serviceOptions, grpcServerOpt)
+	sm := svc.SecurityManager()
 
-	ocrSyncQueueHandler := queue.NewOCRQueueHandler(service)
-	ocrSyncQueue := frame.RegisterSubscriber(ocrConfig.QueueOcrSyncName, ocrConfig.QueueOcrSync, 2, ocrSyncQueueHandler)
-	ocrSyncQueueP := frame.RegisterPublisher(ocrConfig.QueueOcrSyncName, ocrConfig.QueueOcrSync)
-	serviceOptions = append(serviceOptions, ocrSyncQueue, ocrSyncQueueP)
+	audienceList := cfg.GetOauth2ServiceAudience()
 
-	service.Init(serviceOptions...)
-
-	log.WithField("server http port", ocrConfig.HttpServerPort).
-		WithField("server grpc port", ocrConfig.GrpcServerPort).
-		Info(" Initiating server operations")
-
-	err = service.Run(ctx, "")
+	filesCli, err := setupFilesClient(ctx, sm, cfg, audienceList)
 	if err != nil {
-		log.Printf("main -- Could not run Server : %v", err)
+		log.WithError(err).Fatal("could not setup files client")
 	}
 
+	dbPool := dbManager.GetPool(ctx, datastore.DefaultPoolName)
+	if dbPool == nil {
+		log.Fatal("database pool is nil - check DATABASE_URL environment variable")
+		return
+	}
+
+	queueMan := svc.QueueManager()
+	ocrRepo := repository.NewOcrRepository(dbPool)
+	ocrBusiness := business.NewOcrBusiness(ctx, svc, filesCli, ocrRepo, queueMan)
+
+	connectHandler := setupConnectServer(ctx, sm, ocrBusiness)
+
+	ocrSyncQueueHandler := queue.NewOCRQueueHandler(ocrRepo)
+
+	serviceOptions := []frame.Option{
+		frame.WithHTTPHandler(connectHandler),
+		frame.WithRegisterSubscriber(cfg.QueueOcrSyncName, cfg.QueueOcrSync, ocrSyncQueueHandler),
+		frame.WithRegisterPublisher(cfg.QueueOcrSyncName, cfg.QueueOcrSync),
+	}
+
+	svc.Init(ctx, serviceOptions...)
+
+	serverPort := cfg.Port()
+	if serverPort == "" {
+		serverPort = ":7012"
+	}
+
+	log.With("port", serverPort).Info("initiating server operations")
+	err = svc.Run(ctx, serverPort)
+	if err != nil {
+		log.WithError(err).Error("could not run Server")
+	}
+}
+
+func setupFilesClient(
+	ctx context.Context,
+	clHolder security.InternalOauth2ClientHolder,
+	cfg config.OcrConfig,
+	audiences []string,
+) (filesv1connect.FilesServiceClient, error) {
+	return files.NewClient(ctx,
+		apis.WithEndpoint(cfg.FilesServiceURI),
+		apis.WithTokenEndpoint(cfg.GetOauth2TokenEndpoint()),
+		apis.WithTokenUsername(clHolder.JwtClientID()),
+		apis.WithTokenPassword(clHolder.JwtClientSecret()),
+		apis.WithScopes(openid.ConstSystemScopeInternal),
+		apis.WithAudiences(audiences...))
+}
+
+func setupConnectServer(ctx context.Context, sm security.Manager, ocrBusiness business.OCRBusiness) http.Handler {
+	implementation := handlers.NewOCRServer(ocrBusiness)
+
+	defaultInterceptorList, err := connectInterceptors.DefaultList(ctx, sm.GetAuthenticator(ctx))
+	if err != nil {
+		util.Log(ctx).WithError(err).Fatal("could not create default interceptors")
+	}
+
+	_, serverHandler := ocrv1connect.NewOCRServiceHandler(
+		implementation, connect.WithInterceptors(defaultInterceptorList...))
+
+	return serverHandler
 }

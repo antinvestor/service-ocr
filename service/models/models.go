@@ -1,12 +1,12 @@
 package models
 
 import (
-	"github.com/pitabwire/frame"
+	"github.com/pitabwire/frame/data"
 	"gorm.io/datatypes"
 )
 
 type OcrLog struct {
-	frame.BaseModel
+	data.BaseModel
 	FileID      string `gorm:"type:varchar(50)"`
 	ReferenceID string `gorm:"type:varchar(50)"`
 	AccessID    string `gorm:"type:varchar(50)"`

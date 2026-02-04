@@ -1,11 +1,11 @@
 package config
 
-import "github.com/pitabwire/frame"
+import "github.com/pitabwire/frame/config"
 
 type OcrConfig struct {
-	frame.ConfigurationDefault
-	FilesServiceURI string `default:"127.0.0.1:7020" envconfig:"FILES_SERVICE_URI"`
+	config.ConfigurationDefault
+	FilesServiceURI string `envDefault:"127.0.0.1:7020" env:"FILES_SERVICE_URI"`
 
-	QueueOcrSync     string `default:"mem://ocr_model_sync" envconfig:"QUEUE_OCR_SYNC"`
-	QueueOcrSyncName string `default:"ocr_model_sync" envconfig:"QUEUE_OCR_SYNC_NAME"`
+	QueueOcrSync     string `envDefault:"mem://ocr_model_sync" env:"QUEUE_OCR_SYNC"`
+	QueueOcrSyncName string `envDefault:"ocr_model_sync" env:"QUEUE_OCR_SYNC_NAME"`
 }

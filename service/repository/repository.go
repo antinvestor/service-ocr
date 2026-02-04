@@ -2,8 +2,9 @@ package repository
 
 import (
 	"context"
+
 	"github.com/antinvestor/service-ocr/service/models"
-	"github.com/pitabwire/frame"
+	"github.com/pitabwire/frame/datastore/pool"
 )
 
 type OcrRepository interface {
@@ -14,37 +15,35 @@ type OcrRepository interface {
 }
 
 type ocrRepository struct {
-	service *frame.Service
+	dbPool pool.Pool
 }
 
 func (pr *ocrRepository) GetByID(ctx context.Context, id string) (*models.OcrLog, error) {
 	ocrLog := &models.OcrLog{}
-	err := pr.service.DB(ctx, true).First(ocrLog, "id = ?", id).Error
+	err := pr.dbPool.DB(ctx, true).First(ocrLog, "id = ?", id).Error
 	return ocrLog, err
 }
 
 func (pr *ocrRepository) GetByReference(ctx context.Context, reference string) ([]*models.OcrLog, error) {
 	var ocrLog []*models.OcrLog
-	err := pr.service.DB(ctx, true).Find(ocrLog, "reference = ?", reference).Error
+	err := pr.dbPool.DB(ctx, true).Find(&ocrLog, "reference_id = ?", reference).Error
 	return ocrLog, err
 }
 
 func (pr *ocrRepository) Save(ctx context.Context, ocrLog *models.OcrLog) error {
-	return pr.service.DB(ctx, false).Save(ocrLog).Error
+	return pr.dbPool.DB(ctx, false).Save(ocrLog).Error
 }
 
 func (pr *ocrRepository) Delete(ctx context.Context, id string) error {
-
 	ocrLog, err := pr.GetByID(ctx, id)
 	if err != nil {
 		return err
 	}
-	return pr.service.DB(ctx, false).Delete(ocrLog).Error
+	return pr.dbPool.DB(ctx, false).Delete(ocrLog).Error
 }
 
-func NewOcrRepository(service *frame.Service) OcrRepository {
-	ocrRepository := ocrRepository{
-		service: service,
+func NewOcrRepository(dbPool pool.Pool) OcrRepository {
+	return &ocrRepository{
+		dbPool: dbPool,
 	}
-	return &ocrRepository
 }

@@ -3,18 +3,16 @@ package queue
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/antinvestor/service-ocr/service/models"
 	"github.com/antinvestor/service-ocr/service/repository"
-	"github.com/pitabwire/frame"
 )
 
 type OCRQueueHandler struct {
-	service *frame.Service
-	repo    repository.OcrRepository
+	repo repository.OcrRepository
 }
 
-func (oq *OCRQueueHandler) Handle(ctx context.Context, payload []byte) error {
-
+func (oq *OCRQueueHandler) Handle(ctx context.Context, _ map[string]string, payload []byte) error {
 	ocrLog := &models.OcrLog{}
 	err := json.Unmarshal(payload, ocrLog)
 	if err != nil {
@@ -22,10 +20,8 @@ func (oq *OCRQueueHandler) Handle(ctx context.Context, payload []byte) error {
 	}
 
 	return oq.repo.Save(ctx, ocrLog)
-
 }
 
-func NewOCRQueueHandler(service *frame.Service) *OCRQueueHandler {
-	ocrRepo := repository.NewOcrRepository(service)
-	return &OCRQueueHandler{service, ocrRepo}
+func NewOCRQueueHandler(ocrRepo repository.OcrRepository) *OCRQueueHandler {
+	return &OCRQueueHandler{repo: ocrRepo}
 }
