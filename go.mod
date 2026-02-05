@@ -9,15 +9,15 @@ require (
 	buf.build/gen/go/antinvestor/ocr/connectrpc/go v1.19.1-20260102123348-6bcf22d3ced1.2
 	buf.build/gen/go/antinvestor/ocr/protocolbuffers/go v1.36.11-20260102123348-6bcf22d3ced1.1
 	connectrpc.com/connect v1.19.1
-	github.com/antinvestor/apis/go/common v1.53.1
-	github.com/antinvestor/apis/go/files v1.53.4
+	github.com/antinvestor/apis/go/common v1.53.5
+	github.com/antinvestor/apis/go/files v1.53.6
 	github.com/otiai10/gosseract/v2 v2.4.1
-	github.com/pitabwire/frame v1.71.0
+	github.com/pitabwire/frame v1.71.1
 	github.com/pitabwire/util v0.4.0
 	golang.org/x/oauth2 v0.34.0
 	google.golang.org/api v0.265.0
 	google.golang.org/protobuf v1.36.11
-	gorm.io/datatypes v1.2.0
+	gorm.io/datatypes v1.2.7
 )
 
 require (
@@ -74,7 +74,7 @@ require (
 	go.opentelemetry.io/contrib/bridges/otelslog v0.15.0 // indirect
 	go.opentelemetry.io/contrib/bridges/prometheus v0.65.0 // indirect
 	go.opentelemetry.io/contrib/exporters/autoexport v0.65.0 // indirect
-	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.64.0 // indirect
+	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.65.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.65.0 // indirect
 	go.opentelemetry.io/contrib/propagators/autoprop v0.65.0 // indirect
 	go.opentelemetry.io/contrib/propagators/aws v1.40.0 // indirect
@@ -114,7 +114,7 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260203192932-546029d2fa20 // indirect
 	google.golang.org/grpc v1.78.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/driver/mysql v1.4.7 // indirect
+	gorm.io/driver/mysql v1.5.6 // indirect
 	gorm.io/driver/postgres v1.6.0 // indirect
 	gorm.io/gorm v1.31.1 // indirect
 )
