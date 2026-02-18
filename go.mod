@@ -12,9 +12,9 @@ require (
 	github.com/antinvestor/apis/go/common v1.53.5
 	github.com/antinvestor/apis/go/files v1.53.6
 	github.com/otiai10/gosseract/v2 v2.4.1
-	github.com/pitabwire/frame v1.71.1
+	github.com/pitabwire/frame v1.72.1
 	github.com/pitabwire/util v0.4.0
-	golang.org/x/oauth2 v0.34.0
+	golang.org/x/oauth2 v0.35.0
 	google.golang.org/api v0.265.0
 	google.golang.org/protobuf v1.36.11
 	gorm.io/datatypes v1.2.7
@@ -54,14 +54,15 @@ require (
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	github.com/klauspost/compress v1.18.3 // indirect
+	github.com/klauspost/compress v1.18.4 // indirect
 	github.com/lmittmann/tint v1.1.3 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/nats-io/nats.go v1.48.0 // indirect
 	github.com/nats-io/nkeys v0.4.15 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/nicksnyder/go-i18n/v2 v2.6.1 // indirect
-	github.com/panjf2000/ants/v2 v2.11.4 // indirect
+	github.com/ory/keto/proto v0.13.0-alpha.0 // indirect
+	github.com/panjf2000/ants/v2 v2.11.5 // indirect
 	github.com/pitabwire/natspubsub v0.7.12 // indirect
 	github.com/prometheus/client_golang v1.23.2 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
@@ -107,7 +108,7 @@ require (
 	golang.org/x/exp v0.0.0-20260112195511-716be5621a96 // indirect
 	golang.org/x/net v0.49.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
-	golang.org/x/sys v0.40.0 // indirect
+	golang.org/x/sys v0.41.0 // indirect
 	golang.org/x/text v0.33.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260203192932-546029d2fa20 // indirect
